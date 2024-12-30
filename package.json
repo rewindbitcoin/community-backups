@@ -1,0 +1,44 @@
+{
+  "name": "@rewindbitcoin/community-backups",
+  "main": "index.js",
+  "pear": {
+    "name": "@rewindbitcoin/community-backups",
+    "type": "terminal"
+  },
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "stage-dev": "pear stage --ignore tape,testnet,bitcoin dev .",
+    "stage-prod": "pear stage --ignore tape,testnet,bitcoin production .",
+    "release": "pear release production",
+    "seed-prod": "pear seed production",
+    "seed-dev": "pear seed dev",
+    "dev": "pear run -d ."
+  },
+  "devDependencies": {
+    "pear-interface": "^1.0.0"
+  },
+  "dependencies": {
+    "@bitcoinerlab/secp256k1": "^1.2.0",
+    "@noble/hashes": "^1.6.1",
+    "b4a": "^1.6.7",
+    "bare-buffer": "^2.7.1",
+    "bare-crypto": "^1.3.1",
+    "bare-fs": "^4.0.1",
+    "bare-http1": "^4.0.2",
+    "bare-path": "^3.0.0",
+    "bare-process": "^4.0.0",
+    "bare-readline": "^1.0.6",
+    "bare-tty": "^5.0.1",
+    "bip32": "^4.0.0",
+    "bip39": "^3.1.0",
+    "bitcoinjs-message": "github:landabaso/bitcoinjs-message#upgrade-npm-packages-2024",
+    "buffer": "npm:bare-node-buffer",
+    "corestore": "^6.18.4",
+    "crypto": "npm:bare-node-crypto",
+    "http": "npm:bare-node-http",
+    "hyperbee": "^2.20.7",
+    "hyperswarm": "^4.8.4",
+    "sodium-universal": "^4.0.1"
+  }
+}

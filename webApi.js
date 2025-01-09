@@ -25,25 +25,33 @@ export default function webApi(port, bees) {
     const pathSegments = pathname.split("/").filter(Boolean);
 
     if (req.method === "GET") {
+      if (pathSegments.length === 1 && pathSegments[0] === "generate-204") {
+        // Route: /generate-204
+        console.log(`[info] Status 204`);
+        res.statusCode = 204;
+        return res.end();
+      }
       let networkId, vaultId, command;
 
       if (
-        pathSegments.length === 2 &&
-        (pathSegments[1] === "get" || pathSegments[1] === "check")
+        pathSegments.length === 3 &&
+        pathSegments[0] === "vaults" &&
+        (pathSegments[2] === "get" || pathSegments[1] === "check")
       ) {
         //If :networkId not passed, assume its bitcoin
-        // Route: /:vaultId/get
+        // Route: /vaults/:vaultId/{get,check}
         networkId = "bitcoin";
-        vaultId = pathSegments[0];
-        command = pathSegments[1];
-      } else if (
-        pathSegments.length === 3 &&
-        (pathSegments[2] === "get" || pathSegments[2] === "check")
-      ) {
-        // Route: /:networkId/:vaultId/get
-        networkId = pathSegments[0];
         vaultId = pathSegments[1];
         command = pathSegments[2];
+      } else if (
+        pathSegments.length === 4 &&
+        pathSegments[1] === "vaults" &&
+        (pathSegments[3] === "get" || pathSegments[2] === "check")
+      ) {
+        // Route: /:networkId/vaults/:vaultId/{get,check}
+        networkId = pathSegments[0];
+        vaultId = pathSegments[2];
+        command = pathSegments[3];
       } else {
         // Invalid route
         console.log(`[info] Status 404`);

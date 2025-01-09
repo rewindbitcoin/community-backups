@@ -21,7 +21,7 @@ Key benefits:
 
 ### REST API
 
-- Offers endpoints to check vault status and retrieve encrypted vault data.  
+- Offers endpoints to check vault status and retrieve encrypted vault data.
 - This API can be configured as the data source in the Rewind Bitcoin wallet, allowing users to bypass Rewind's servers for enhanced privacy, even though all data is already encrypted.
 
 The application supports multiple networks, including Bitcoin Mainnet, Testnet, and Tape (Rewind's test network). By default, all networks are enabled, but specific ones can be disabled using command-line options. The Tape Network offers a dedicated testing environment with free coins available through a faucet for experimentation.
@@ -32,7 +32,7 @@ Rewind Bitcoin Community Backups is built on the [Pears](https://pears.com) plat
 
 ### Prerequisites
 
-- **Pears Runtime**: Required to run this program. If you already use Pears applications like Keet, the runtime is likely already installed.  
+- **Pears Runtime**: Required to run this program. If you already use Pears applications like Keet, the runtime is likely already installed.
 - **Node.js**: Needed to install the Pears runtime if it is not already set up.
 
 ### Pears Installation
@@ -83,16 +83,17 @@ pear dump <app-id> <folder>
 Usage: pear run <app-id> [options]
 
 Options:
-  --help               Show this help message
-  --enable-api         Enable the REST API
-  --port <number>      Specify the port for the REST API (default: random)
-  --interactive        Enable interactive mode
-  --disable-bitcoin    Disable Bitcoin P2P network
-  --disable-testnet    Disable Testnet P2P network
-  --disable-tape       Disable Tape P2P network
+  --help                    Show this help message
+  --enable-api              Enable the REST API
+  --port <number>           Specify the port for the REST API (default: random)
+  --interactive             Enable interactive mode
+  --disable-bitcoin         Disable Bitcoin P2P network
+  --disable-testnet         Disable Testnet P2P network
+  --disable-tape            Disable Tape P2P network
+  --enable-regtest <pubKey> Enable Regtest network with the specified public key
 ```
 
-By default, all networks are enabled. At least one network must remain enabled.
+By default, all public networks are enabled. At least one network must remain enabled.
 
 ### Example Commands
 
@@ -127,19 +128,25 @@ Interactive mode allows users to restore vaults using their recovery mnemonics.
 
 ### API Endpoints
 
-#### `GET /[:networkId]/:vaultId/get`
+#### `GET /[:networkId]/vaults/:vaultId/get`
 
 - **Description**: Retrieve vault data by `vaultId`. The optional `networkId` specifies the network (e.g., `testnet`, `tape`). If `networkId` is omitted, the default is `bitcoin`.
 - **Response**:
   - `200 OK`: Returns the encrypted vault data as a binary stream.
   - `404 Not Found`: Vault not found.
 
-#### `GET /[:networkId]/:vaultId/check`
+#### `GET /[:networkId]/vaults/:vaultId/check`
 
 - **Description**: Check if a vault exists by `vaultId`. The optional `networkId` specifies the network (e.g., `testnet`, `tape`). If `networkId` is omitted, the default is `bitcoin`.
 - **Response**:
   - `200 OK`: `{ exists: true, message: "Data exists for vaultId: <vaultId>" }`
   - `404 Not Found`: `{ exists: false, message: "No data found for vaultId: <vaultId>" }`
+
+#### `GET /generate-204`
+
+- **Description**: Returns a `204 No Content` status. This endpoint can be used as a health check or a lightweight API response.
+- **Response**:
+  - `204 No Content`: Indicates the server is operational.
 
 ### Example Run
 
@@ -151,26 +158,30 @@ pear run <app-id> --enable-api --port 8080
 
 Access the endpoints:
 
-- **Check vault**:  
+- **Check vault**:
+
   ```bash
-  curl http://localhost:8080/<vaultId>/check
+  curl http://localhost:8080/vaults/<vaultId>/check
   ```
 
-- **Get vault**:  
+- **Get vault**:
+
   ```bash
-  curl http://localhost:8080/<vaultId>/get
+  curl http://localhost:8080/vaults/<vaultId>/get
   ```
 
 If you're using a specific network (e.g., `testnet` or `tape`), include the `networkId` in the URL:
 
-- **Check vault**:  
+- **Check vault**:
+
   ```bash
-  curl http://localhost:8080/testnet/<vaultId>/check
+  curl http://localhost:8080/testnet/vaults/<vaultId>/check
   ```
 
-- **Get vault**:  
+- **Get vault**:
+
   ```bash
-  curl http://localhost:8080/tape/<vaultId>/get
+  curl http://localhost:8080/tape/vaults/<vaultId>/get
   ```
 
 ## License

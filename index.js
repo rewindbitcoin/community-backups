@@ -39,19 +39,42 @@ const activeNetworks = defaultNetworks.filter(
   (network) => !disabledNetworks.includes(network),
 );
 
+// Handle regtest explicitly
+const regtestIndex = args.indexOf("--enable-regtest");
+if (regtestIndex !== -1) {
+  if (!args[regtestIndex + 1]) {
+    console.error("[error] The --enable-regtest option requires a public key.");
+    process.exit(1);
+  }
+  try {
+    const regtestPubKey = b4a.from(args[regtestIndex + 1], "hex");
+    if (regtestPubKey.length !== 32) 
+      throw new Error("Invalid public key length. Expected 32 bytes.");
+    activeNetworks.push("regtest");
+    PUBKEYS["regtest"] = regtestPubKey;
+  } catch (err) {
+    console.error(
+      `[error] Invalid Regtest public key: ${args[regtestIndex + 1]}`,
+    );
+    console.error(`[error] ${err.message}`);
+    process.exit(1);
+  }
+}
+
 // Check if at least one network is enabled
 if (args.includes("--help") || activeNetworks.length === 0) {
   console.log(`
 Usage: program [options]
 
 Options:
-  --help               Show this help message
-  --enable-api         Enable the REST API
-  --port <number>      Specify the port for the REST API (default: random)
-  --interactive        Enable interactive mode
-  --disable-bitcoin    Disable Bitcoin P2P network
-  --disable-testnet    Disable Testnet P2P network
-  --disable-tape       Disable Tape P2P network
+  --help                    Show this help message
+  --enable-api              Enable the REST API
+  --port <number>           Specify the port for the REST API (default: random)
+  --interactive             Enable interactive mode
+  --disable-bitcoin         Disable Bitcoin P2P network
+  --disable-testnet         Disable Testnet P2P network
+  --disable-tape            Disable Tape P2P network
+  --enable-regtest <pubKey> Enable Regtest network with the specified public key
 
 By default, all networks are enabled. At least one network must remain enabled.
 `);
@@ -115,8 +138,7 @@ if (args.includes("--enable-api")) {
 }
 
 //Interactive mode
-if (args.includes("--interactive"))
-  streamsInterface = interactive(bees);
+if (args.includes("--interactive")) streamsInterface = interactive(bees);
 
 teardown(() => {
   console.log("[info] Initiating graceful shutdown...");

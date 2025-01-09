@@ -8,8 +8,8 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "stage-dev": "pear stage --ignore tape,testnet,bitcoin dev .",
-    "stage-prod": "pear stage --ignore tape,testnet,bitcoin production .",
+    "stage-dev": "pear stage --ignore regtest,tape,testnet,bitcoin dev .",
+    "stage-prod": "pear stage --ignore regtest,tape,testnet,bitcoin production .",
     "release": "pear release production",
     "seed-prod": "pear seed production",
     "seed-dev": "pear seed dev",

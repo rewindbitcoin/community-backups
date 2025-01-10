@@ -142,7 +142,7 @@ Interactive mode allows users to restore vaults using their recovery mnemonics.
   - `200 OK`: `{ exists: true, message: "Data exists for vaultId: <vaultId>" }`
   - `404 Not Found`: `{ exists: false, message: "No data found for vaultId: <vaultId>" }`
 
-#### `GET /generate-204`
+#### `GET /generate_204`
 
 - **Description**: Returns a `204 No Content` status. This endpoint can be used as a health check or a lightweight API response.
 - **Response**:

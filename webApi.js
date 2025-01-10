@@ -25,7 +25,7 @@ export default function webApi(port, bees) {
     const pathSegments = pathname.split("/").filter(Boolean);
 
     if (req.method === "GET") {
-      if (pathSegments.length === 1 && pathSegments[0] === "generate-204") {
+      if (pathSegments.length === 1 && pathSegments[0] === "generate_204") {
         // Route: /generate-204
         console.log(`[info] Status 204`);
         res.statusCode = 204;

@@ -78,22 +78,31 @@ export default function webApi(port, bees) {
         // Hypothetical call to your Bee retrieval logic
         const node = await bee.get(vaultId);
 
-        if (!node || !node.value) {
-          console.log(`[info] Status 404`);
-          res.statusCode = 404;
-          return res.end(`No data for ID ${vaultId}`);
-        }
-
         if (command === "get") {
-          console.log(`[info] Status 200`);
-          res.writeHead(200, { "Content-Type": "application/octet-stream" });
-          return res.end(node.value);
+          if (!node || !node.value) {
+            console.log(`[info] Status 404`);
+            res.statusCode = 404;
+            return res.end(`No data for ID ${vaultId}`);
+          } else {
+            console.log(`[info] Status 200`);
+            res.writeHead(200, { "Content-Type": "application/octet-stream" });
+            return res.end(node.value);
+          }
         } else if (command === "check") {
-          console.log(`[info] Status 200`);
-          return res.status(200).json({
-            exists: true,
-            message: `Data exists for vaultId: ${vaultId}`,
-          });
+          if (!node || !node.value) {
+            console.log(`[info] Status 404`);
+            res.statusCode = 404;
+            return res.status(404).json({
+              exists: false,
+              message: `No data found for vaultId: ${vaultId}`,
+            });
+          } else {
+            console.log(`[info] Status 200`);
+            return res.status(200).json({
+              exists: true,
+              message: `Data exists for vaultId: ${vaultId}`,
+            });
+          }
         } else {
           console.log(`[info] Status 500`);
           res.statusCode = 500;

@@ -36,7 +36,7 @@ export default function webApi(port, bees) {
       if (
         pathSegments.length === 3 &&
         pathSegments[0] === "vaults" &&
-        (pathSegments[2] === "get" || pathSegments[1] === "check")
+        (pathSegments[2] === "get" || pathSegments[2] === "check")
       ) {
         //If :networkId not passed, assume its bitcoin
         // Route: /vaults/:vaultId/{get,check}
@@ -46,7 +46,7 @@ export default function webApi(port, bees) {
       } else if (
         pathSegments.length === 4 &&
         pathSegments[1] === "vaults" &&
-        (pathSegments[3] === "get" || pathSegments[2] === "check")
+        (pathSegments[3] === "get" || pathSegments[3] === "check")
       ) {
         // Route: /:networkId/vaults/:vaultId/{get,check}
         networkId = pathSegments[0];

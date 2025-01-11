@@ -91,7 +91,6 @@ export default function webApi(port, bees) {
         } else if (command === "check") {
           if (!node || !node.value) {
             console.log(`[info] Status 404`);
-            res.statusCode = 404;
             return res.status(404).json({
               exists: false,
               message: `No data found for vaultId: ${vaultId}`,

@@ -114,7 +114,7 @@ export default function webApi(port, bees) {
   });
 
   return new Promise((resolve) => {
-    server.listen(port, () => {
+    server.listen(port, "0.0.0.0", () => {
       const actualPort = server.address().port; // If port is 0, retrieve assigned one
       console.log(
         `[info] API mode On. Http server listening on port: ${actualPort}`,

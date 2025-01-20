@@ -22,7 +22,7 @@
     "@bitcoinerlab/secp256k1": "^1.2.0",
     "@noble/hashes": "^1.6.1",
     "b4a": "^1.6.7",
-    "bare-buffer": "^2.7.1",
+    "bare-buffer": "^3.0.1",
     "bare-crypto": "^1.3.1",
     "bare-fs": "^4.0.1",
     "bare-http1": "^4.0.2",

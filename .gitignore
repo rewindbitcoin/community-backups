@@ -3,3 +3,4 @@ tape/
 testnet/
 bitcoin/
 regtest/
+.aider*

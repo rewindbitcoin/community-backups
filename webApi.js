@@ -14,6 +14,12 @@
 
 import http from "http";
 
+function writeHeadWithDefaults(res, statusCode, headers = {}, ...args) {
+  const defaultHeaders = res.getHeaders();
+  const mergedHeaders = { ...defaultHeaders, ...headers };
+  res.writeHead(statusCode, mergedHeaders, ...args);
+}
+
 export default function webApi(port, bees) {
   const server = http.createServer(async (req, res) => {
     console.log(`[info] API request: ${req.url}`);
@@ -85,13 +91,17 @@ export default function webApi(port, bees) {
             return res.end(`No data for ID ${vaultId}`);
           } else {
             console.log(`[info] Status 200`);
-            res.writeHead(200, { "Content-Type": "application/octet-stream" });
+            writeHeadWithDefaults(res, 200, {
+              "Content-Type": "application/octet-stream",
+            });
             return res.end(node.value);
           }
         } else if (command === "check") {
           if (!node || !node.value) {
             console.log(`[info] Status 404`);
-            res.writeHead(404, { "Content-Type": "application/json" });
+            writeHeadWithDefaults(res, 404, {
+              "Content-Type": "application/json",
+            });
             return res.end(
               JSON.stringify({
                 exists: false,
@@ -100,7 +110,9 @@ export default function webApi(port, bees) {
             );
           } else {
             console.log(`[info] Status 200`);
-            res.writeHead(200, { "Content-Type": "application/json" });
+            writeHeadWithDefaults(res, 200, {
+              "Content-Type": "application/json",
+            });
             return res.end(
               JSON.stringify({
                 exists: true,
